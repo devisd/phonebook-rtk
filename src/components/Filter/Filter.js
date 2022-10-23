@@ -1,19 +1,27 @@
-import propTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux/es/exports';
+import { filter } from 'redux/store';
 
-const Filter = ({ filter, onChange }) => {
+const Filter = () => {
+  const dispatch = useDispatch();
+  const filterItem = useSelector(state => state.filter);
+
+  const onHandleChange = event => {
+    dispatch(filter(event.currentTarget.value));
+  };
+
   return (
     <div>
       <label>
         Find contacts by name
-        <input type="text" name="filter" value={filter} onInput={onChange} />
+        <input
+          type="text"
+          name="filter"
+          value={filterItem}
+          onInput={onHandleChange}
+        />
       </label>
     </div>
   );
 };
 
 export default Filter;
-
-Filter.propTypes = {
-  filter: propTypes.string,
-  onChange: propTypes.func,
-};
