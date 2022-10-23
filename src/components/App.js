@@ -1,29 +1,11 @@
 import { useState, useEffect } from 'react';
 
-import Form from './components/Form';
-import Contacts from './components/Contacts';
-import Filter from './components/Filter';
+import Form from './Form';
+import Contacts from './Contacts';
+import Filter from './Filter';
 
 import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
-
-// ====== Второй способ работы с localStorage и useState ======
-//  == Отдельная функция работы с localStorage и useEffect ==
-// const useLocalStorage = (key, defaultValue) => {
-//   const [state, setState] = useState(() => {
-//     return JSON.parse(window.localStorage.getItem(key)) ?? defaultValue;
-//   });
-//   useEffect(() => {
-//     window.localStorage.setItem(key, JSON.stringify(state));
-//   }, [key, state]);
-
-//   return [state, setState];
-// };
-//  == Записи useState в функции ==
-// const [contacts, setContacts] = useState('contacts', []);
-// const [filter, setFilter] = useState('filter', '');
-//
-// =============================================================
 
 const App = () => {
   const [contacts, setContacts] = useState(() => {
