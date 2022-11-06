@@ -1,25 +1,35 @@
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux/es/exports';
-import { remove } from 'redux/store';
+import {
+  getContactsService,
+  removeContactsService,
+} from './../../redux/slices/contactsSlice';
 
 const Contacts = () => {
   const dispatch = useDispatch();
   const contactList = useSelector(state => state.items);
   const filterItem = useSelector(state => state.filter);
 
+  useEffect(() => {
+    dispatch(getContactsService());
+  }, [dispatch]);
+
   const visibleContacts = contactList.filter(el =>
     el.name.toLowerCase().includes(filterItem.toLowerCase())
   );
 
-  const component = visibleContacts.map(el => {
+  console.log(contactList);
+
+  const component = visibleContacts.map(({ id, name, phone }) => {
     return (
-      <li key={el.id}>
+      <li key={id}>
         <p>
-          {el.name}: {el.number}
+          {name}: {phone}
         </p>
         <button
           type="button"
           onClick={() => {
-            dispatch(remove(el.id));
+            dispatch(removeContactsService(id));
           }}
         >
           Delete
