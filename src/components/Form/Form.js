@@ -1,13 +1,10 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux/es/exports';
-// import { add } from 'redux/store';
-import { addContactsService } from './../../redux/slices/contactsSlice';
-// import { nanoid } from 'nanoid';
+import { useAddContactMutation } from 'redux/slices/contactsApi';
 
 const Form = () => {
-  const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
+  const [addContact] = useAddContactMutation();
 
   const handleChange = e => {
     const { name, value } = e.currentTarget;
@@ -26,14 +23,12 @@ const Form = () => {
     }
   };
 
-  const handleSubmit = event => {
+  const handleSubmit = async event => {
     event.preventDefault();
-    dispatch(
-      addContactsService({
-        name,
-        phone,
-      })
-    );
+    await addContact({
+      name,
+      phone,
+    }).unwrap();
     reset();
   };
 

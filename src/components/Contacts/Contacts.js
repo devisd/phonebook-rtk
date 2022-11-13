@@ -1,24 +1,21 @@
-import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux/es/exports';
+import { useSelector } from 'react-redux/es/exports';
 import {
-  getContactsService,
-  removeContactsService,
-} from './../../redux/slices/contactsSlice';
+  useGetContactsQuery,
+  useDeleteContactMutation,
+} from 'redux/slices/contactsApi';
 
 const Contacts = () => {
-  const dispatch = useDispatch();
-  const contactList = useSelector(state => state.items);
+  const { data = [] } = useGetContactsQuery();
+  const [deleteContact] = useDeleteContactMutation();
   const filterItem = useSelector(state => state.filter);
 
-  useEffect(() => {
-    dispatch(getContactsService());
-  }, [dispatch]);
-
-  const visibleContacts = contactList.filter(el =>
+  const visibleContacts = data.filter(el =>
     el.name.toLowerCase().includes(filterItem.toLowerCase())
   );
 
-  console.log(contactList);
+  const handleDeleteContacts = async id => {
+    await deleteContact(id).unwrap();
+  };
 
   const component = visibleContacts.map(({ id, name, phone }) => {
     return (
@@ -29,7 +26,7 @@ const Contacts = () => {
         <button
           type="button"
           onClick={() => {
-            dispatch(removeContactsService(id));
+            handleDeleteContacts(id);
           }}
         >
           Delete
@@ -41,7 +38,7 @@ const Contacts = () => {
   return (
     <div>
       <ul>
-        {contactList.length >= 1 ? (
+        {data.length >= 1 ? (
           component
         ) : (
           <li>
